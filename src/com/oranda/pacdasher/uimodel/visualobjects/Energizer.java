@@ -18,7 +18,7 @@ import com.oranda.pacdasher.uimodel.util.*;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Energizer extends AnimatedVisualObject
+public class Energizer extends AnimatedVisualObject implements Edible
 {
     protected Color color = Color.WHITE;
     protected static int diameter = 12;
@@ -85,7 +85,12 @@ public class Energizer extends AnimatedVisualObject
     {
         return scoreValue;
     }
-    
+
+    @Override
+    public void accept(PacDasher pacdasher) {
+        pacdasher.visit(this);
+    }
+
     public int getTypeID()
     {
     	return UIModelConsts.TYPE_ID_ENERGIZER;

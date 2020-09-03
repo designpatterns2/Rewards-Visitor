@@ -283,7 +283,8 @@ public class MazeBackgroundDynamic
                 
                     if (pacDasher.envelopes(xLeft, xRight, yTop, yBottom))
                     {
-                        eatObject(pacDasher, vo, xCoarse, yCoarse);
+                        Edible edible = (Edible) vo;
+                        eatObject(pacDasher, edible, xCoarse, yCoarse);
                         if (vo.getTypeID() == UIModelConsts.TYPE_ID_ENERGIZER)
                         {  
                             Const.logger.fine("envelopes energizer");
@@ -304,7 +305,7 @@ public class MazeBackgroundDynamic
                             XY eatXY = new XY(vo.getX(xyCoarse), 
                                     vo.getY(xyCoarse));
                             UIModel.getInstance().fruitEaten(
-                                    eatXY, vo.getScoreValue());
+                                    eatXY, edible.getScoreValue());
                         }
                     }
                 }
@@ -324,9 +325,9 @@ public class MazeBackgroundDynamic
      * Does not apply to Ghosts, etc.
      */
     void eatObject(
-            PacDasher pacDasher, VisualObject vo, int xCoarse, int yCoarse)
+            PacDasher pacDasher, Edible edible, int xCoarse, int yCoarse)
     {
-        vo.giveCredit(pacDasher);
+        edible.accept(pacDasher);
         //Const.logger.fine("eatObject at " + xCoarse + "," + yCoarse);
         dynamicMazeData.put(xCoarse, yCoarse, null);
     } 

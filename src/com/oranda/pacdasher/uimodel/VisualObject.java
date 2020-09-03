@@ -73,19 +73,6 @@ public abstract class VisualObject implements Cloneable
     {
         return getY(xyCoarse) - diameter/2;
     }
-
-    // select classes may override
-    public int getScoreValue()        
-    {
-        return 0;
-    }
-    
-    public int giveCredit(PacDasher pacDasher)
-    {
-        int credit = getScoreValue();
-        pacDasher.addToScore(credit);
-        return credit;
-    }
     
     /*
      * Whether to render on the intersection of grid lines

@@ -176,10 +176,10 @@ public class MazeAnimatedObjects
         }
         else if (ghostState == GhostState.FLIGHT_GHOST_STATE)
         {
-            int creditGained = ghost.giveCredit(pacDasher);
+            ghost.accept(pacDasher);
             XY captureXY = (XY) (ghost.getXY().clone());
             // the Capture Frame Runner must remember to remove this object
-            createScoreVOGhost(captureXY, creditGained);
+            createScoreVOGhost(captureXY, ghost.getRealScoreValue());
             
             UIModel.getInstance().setCaptureEventRan();
             ghost.reactToCapture();

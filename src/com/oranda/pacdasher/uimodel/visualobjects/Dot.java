@@ -18,7 +18,7 @@ import com.oranda.pacdasher.uimodel.util.*;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Dot extends VisualObject
+public class Dot extends VisualObject implements Edible
 {
     private Color color = Color.WHITE;
     private static final int diameter = 4;
@@ -47,7 +47,12 @@ public class Dot extends VisualObject
     {
         return scoreValue;
     }
-    
+
+    @Override
+    public void accept(PacDasher pacdasher) {
+        pacdasher.visit(this);
+    }
+
     public boolean isIntersectionBased()
     {
         return true;

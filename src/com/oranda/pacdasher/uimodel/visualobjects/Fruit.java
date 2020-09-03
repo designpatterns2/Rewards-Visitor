@@ -21,7 +21,7 @@ import java.awt.Image;
  * There are different kinds of Fruit in different mazes, which serve as
  * a sort of bonus for PacDasher.
  */
-public abstract class Fruit extends AnimatedVisualObject
+public abstract class Fruit extends AnimatedVisualObject implements Edible
 {
     protected Image img;
     
@@ -38,5 +38,10 @@ public abstract class Fruit extends AnimatedVisualObject
     public void setImage(Image img)
     {
         this.img = img;
+    }
+
+    @Override
+    public void accept(PacDasher pacdasher) {
+        pacdasher.visit(this);
     }
 }

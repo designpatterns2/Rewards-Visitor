@@ -20,13 +20,14 @@ import com.oranda.pacdasher.uimodel.event.PacScoreEvent;
 import com.oranda.pacdasher.uimodel.event.PacMoveEvent;
 import com.oranda.pacdasher.uimodel.util.UIModelConsts.GhostState;
 import com.oranda.pacdasher.uimodel.util.*;
+import com.oranda.pacdasher.uimodel.visualobjects.Edible;
 import com.oranda.util.ResourceUtils;
 import com.oranda.util.Str;
 
 import java.awt.Graphics;
 import java.awt.Image;
 
-public class Ghost extends MobileVisualObject
+public class Ghost extends MobileVisualObject implements Edible
 {
     protected static final int TIME_FLIGHT_NORMAL = 300;
     protected static final int TIME_FLIGHT_TOTAL = 450;
@@ -49,7 +50,8 @@ public class Ghost extends MobileVisualObject
     
     protected Image curImg;
         
-    protected static final int scoreValue = 200;   
+    protected static final int scoreValue = 200;
+    private int realScoreValue = 0;
     
     public Ghost()
     {
@@ -189,20 +191,19 @@ public class Ghost extends MobileVisualObject
     {
         return this.scoreValue;
     }
-    
-    /**
-     * The 2nd ghost eaten during scatter mode is twice the
-     * value of the 1st; the 3rd is twice the value of the 2nd;
-     * etc.
-     */
-    public int giveCredit(PacDasher pacDasher)
-    {
-        pacDasher.incNumGhostsEaten();
-        int numGhostsEaten = pacDasher.getNumGhostsEaten();
-        int realScoreValue = (int) ((double) getScoreValue() *
-                Math.pow(2, (double) (numGhostsEaten - 1)));
-        pacDasher.addToScore(realScoreValue);
+
+    @Override
+    public void accept(PacDasher pacdasher) {
+        pacdasher.visit(this);
+    }
+
+
+    public int getRealScoreValue() {
         return realScoreValue;
+    }
+
+    public void setScoreValue(int score) {
+        realScoreValue = score;
     }
     
     public int getTypeID()

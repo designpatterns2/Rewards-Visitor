@@ -16,9 +16,14 @@ import com.oranda.pacdasher.uimodel.event.IPacListener;
 import com.oranda.pacdasher.uimodel.event.PacEvent;
 import com.oranda.pacdasher.uimodel.event.PacScoreEvent;
 import com.oranda.pacdasher.uimodel.event.PacMoveEvent;
+import com.oranda.pacdasher.uimodel.ghosts.Ghost;
 import com.oranda.pacdasher.uimodel.util.UIModelConsts.GhostState;
 import com.oranda.pacdasher.uimodel.util.*;
 import com.oranda.pacdasher.ResourceMgr;
+import com.oranda.pacdasher.uimodel.visualobjects.Dot;
+import com.oranda.pacdasher.uimodel.visualobjects.Edible;
+import com.oranda.pacdasher.uimodel.visualobjects.Energizer;
+import com.oranda.pacdasher.uimodel.visualobjects.Fruit;
 import com.oranda.util.ResourceUtils;
 import com.oranda.util.Str;
 
@@ -30,7 +35,7 @@ import java.util.Iterator;
 /**
  * Representing the PacDasher sprite 
  */
-public class PacDasher extends MobileVisualObject implements IPlayer
+public class PacDasher extends MobileVisualObject implements IPlayer, EdibleVisitor
 {
     protected Image curImg;
     
@@ -330,5 +335,35 @@ public class PacDasher extends MobileVisualObject implements IPlayer
     {
         this.numGhostsEaten = 0;
     }
-    
+
+
+    @Override
+    public void visit(Fruit fruit) {
+        addToScore(fruit.getScoreValue());
+    }
+
+    @Override
+    public void visit(Dot dot) {
+        addToScore(dot.getScoreValue());
+    }
+
+    @Override
+    public void visit(Energizer energizer) {
+        addToScore(energizer.getScoreValue());
+    }
+
+    /**
+     * The 2nd ghost eaten during scatter mode is twice the
+     * value of the 1st; the 3rd is twice the value of the 2nd;
+     * etc.
+     */
+    @Override
+    public void visit(Ghost ghost) {
+        incNumGhostsEaten();
+        int numGhostsEaten = getNumGhostsEaten();
+        int realScoreValue = (int) ((double) ghost.getScoreValue() *
+                Math.pow(2, (double) (numGhostsEaten - 1)));
+        ghost.setScoreValue(realScoreValue);
+        addToScore(realScoreValue);
+    }
 }
